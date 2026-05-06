@@ -204,7 +204,7 @@ impl PickerState {
                 .collect();
 
             // Sort by score (higher is better)
-            matches.sort_by(|a, b| b.score.cmp(&a.score));
+            matches.sort_by_key(|b| std::cmp::Reverse(b.score));
 
             self.filtered_indices = matches.into_iter().map(|m| m.index).collect();
 

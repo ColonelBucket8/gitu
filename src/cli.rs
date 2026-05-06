@@ -36,7 +36,9 @@ pub struct Args {
 
 #[derive(Debug, Subcommand)]
 pub enum Commands {
-    Show { reference: String },
+    Show {
+        reference: String,
+    },
     Blame {
         file: String,
         #[clap(short, long)]
