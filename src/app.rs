@@ -82,6 +82,16 @@ impl App {
                     None,
                 )?]
             }
+            Some(cli::Commands::Blame { ref rev, ref file }) => {
+                vec![screen::blame::create(
+                    Arc::clone(&config),
+                    Rc::clone(&repo),
+                    size,
+                    file.clone(),
+                    rev.clone(),
+                    None,
+                )?]
+            }
             None => vec![screen::status::create(
                 Arc::clone(&config),
                 Rc::clone(&repo),
