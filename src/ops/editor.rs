@@ -300,3 +300,31 @@ impl OpTrait for HalfPageDown {
         "Half page down".into()
     }
 }
+
+pub(crate) struct MoveTop;
+impl OpTrait for MoveTop {
+    fn get_action(&self, _target: &ItemData) -> Option<Action> {
+        Some(Rc::new(|app, _term| {
+            app.screen_mut().move_cursor_to_top();
+            Ok(())
+        }))
+    }
+
+    fn display(&self, _state: &State) -> String {
+        "Top".into()
+    }
+}
+
+pub(crate) struct MoveBottom;
+impl OpTrait for MoveBottom {
+    fn get_action(&self, _target: &ItemData) -> Option<Action> {
+        Some(Rc::new(|app, _term| {
+            app.screen_mut().move_cursor_to_bottom();
+            Ok(())
+        }))
+    }
+
+    fn display(&self, _state: &State) -> String {
+        "Bottom".into()
+    }
+}
