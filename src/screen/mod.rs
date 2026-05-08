@@ -326,6 +326,30 @@ impl Screen {
         }
     }
 
+    pub(crate) fn move_cursor_to_top(&mut self) {
+        if self.line_index.is_empty() {
+            return;
+        }
+        if let Some(first) = self.find_first_selectable() {
+            self.cursor = first;
+            self.scroll = 0;
+        }
+    }
+
+    pub(crate) fn move_cursor_to_bottom(&mut self) {
+        if self.line_index.is_empty() {
+            return;
+        }
+        if let Some(last) = self.find_last_selectable() {
+            self.cursor = last;
+            self.scroll_fit_end();
+        }
+    }
+
+    fn find_last_selectable(&self) -> Option<usize> {
+        (0..self.line_index.len()).rfind(|&line_i| !self.at_line(line_i).unselectable)
+    }
+
     pub(crate) fn is_collapsed(&self, item: &Item) -> bool {
         self.collapsed.contains(&item.id)
     }

@@ -665,7 +665,7 @@ mod tests {
                         layout.text("<alt+h>/<alt+left> Parent section");
                         layout.text("<ctrl+u> Half page up");
                         layout.text("<ctrl+d> Half page down");
-                        layout.text("g Refresh");
+                        layout.text("g+r Refresh");
                         layout.text("q/<esc> Quit/Close");
                     });
                     layout.vertical(None, OPTS, |layout| {

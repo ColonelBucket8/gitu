@@ -25,5 +25,5 @@ j/<down> Down                      h/? Help  K Discard
 <alt+h>/<alt+left> Parent section  r Rebase
 <ctrl+u> Half page up              X Reset
 <ctrl+d> Half page down            V Revert
-g Refresh                          z Stash
+g+r Refresh                        z Stash
 q/<esc> Quit/Close
