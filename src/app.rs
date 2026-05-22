@@ -45,7 +45,7 @@ use super::Res;
 pub(crate) struct State {
     pub repo: Rc<Repository>,
     pub config: Arc<Config>,
-    pending_keys: Vec<(KeyModifiers, KeyCode)>,
+    pub pending_keys: Vec<(KeyModifiers, KeyCode)>,
     pub quit: bool,
     pub screens: Vec<Screen>,
     pub pending_menu: Option<PendingMenu>,
@@ -286,8 +286,9 @@ impl App {
         match matching_bindings[..] {
             [binding] => {
                 if binding.keys == self.state.pending_keys {
-                    self.handle_op(binding.op.clone(), term)?;
+                    let op = binding.op.clone();
                     self.state.pending_keys.clear();
+                    self.handle_op(op, term)?;
                 }
             }
             [] => self.state.pending_keys.clear(),

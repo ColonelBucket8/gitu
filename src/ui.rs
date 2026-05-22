@@ -35,6 +35,15 @@ pub(crate) fn ui(frame: &mut Frame, state: &mut State) {
             layout_command_log(layout, state, size.width as usize);
             layout_prompt(layout, state, size.width as usize);
             layout_picker(layout, state, size.width as usize);
+            if !state.pending_keys.is_empty() {
+                let keys = &state
+                    .pending_keys
+                    .iter()
+                    .map(|(_, k)| k.to_string())
+                    .collect::<String>();
+
+                layout_span(layout, (("    ".to_string() + keys).into(), Style::new()));
+            }
         });
     });
 
