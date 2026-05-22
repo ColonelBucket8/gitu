@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.42.0] - 2026-05-22
+
+### 🚀 Features
+
+- Display pending keys, like the new `gg` or `gr`
+- Add keybinding to scroll top and bottom
+- *(cli)* `gitu blame [--rev <REV>] <FILE>`
+- Ability to open editor from a selected hunk-line
+- Blame files/hunks and added lines with 'B'
+- Support reversing (`v`) file/hunk/line patch
+- Support applying stash file/hunk/line patch
+- Stash view shows staged/unstaged/untracked
+- Add cherry-pick command and status display
+- *(branch)* Add rename branch operation
+
+### 🐛 Bug Fixes
+
+- Show works with kakoune
+- Double press on transient selection menu
+- Handle 'no commits yet' status with remote
+
 ## [0.41.0] - 2026-03-11
 
 ### 🚀 Features

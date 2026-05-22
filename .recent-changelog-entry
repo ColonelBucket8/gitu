@@ -1,15 +1,21 @@
-## [0.41.0] - 2026-03-11
+## [0.42.0] - 2026-05-22
 
 ### 🚀 Features
 
-- *(rebase)* Use new picker when selecting a rebase target
-- Convert branch operations to interactive picker
-- Use new interactive picker when merging (#496)
-- Interactive picker functionality and ui
-- Align menu key and label spacing (#476)
+- Display pending keys, like the new `gg` or `gr`
+- Add keybinding to scroll top and bottom
+- *(cli)* `gitu blame [--rev <REV>] <FILE>`
+- Ability to open editor from a selected hunk-line
+- Blame files/hunks and added lines with 'B'
+- Support reversing (`v`) file/hunk/line patch
+- Support applying stash file/hunk/line patch
+- Stash view shows staged/unstaged/untracked
+- Add cherry-pick command and status display
+- *(branch)* Add rename branch operation
 
 ### 🐛 Bug Fixes
 
-- Keys double press on Windows (#385) (again)
-- Make `backtab` key bindable (shift-tab)
+- Show works with kakoune
+- Double press on transient selection menu
+- Handle 'no commits yet' status with remote
 
