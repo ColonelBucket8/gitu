@@ -383,10 +383,66 @@ impl<'a> Parser<'a> {
     fn old_new_file_header(&mut self) -> ThinResult<(FilePath, FilePath, bool)> {
         log::trace!("Parser::old_new_file_header\n{:?}", self);
         self.consume("diff --git ")?;
-        let old_path = self.diff_header_path(Self::ascii_whitespace)?;
-        let new_path = self.diff_header_path(Self::newline_or_eof)?;
+
+        let line_end = self.find_line_end();
+        let bytes = self.input.as_bytes();
+        let mut last_sep_start: Option<usize> = None;
+        let mut pos = self.cursor;
+        while pos + 2 < line_end {
+            if bytes[pos] == b' ' && bytes[pos + 1].is_ascii_lowercase() && bytes[pos + 2] == b'/' {
+                last_sep_start = Some(pos);
+            }
+            pos += 1;
+        }
+
+        let (old_path, new_path) = match last_sep_start {
+            Some(sep_start) => {
+                let old_path_start = if self.cursor + 2 <= sep_start
+                    && bytes[self.cursor].is_ascii_lowercase()
+                    && bytes[self.cursor + 1] == b'/'
+                {
+                    self.cursor + 2
+                } else {
+                    self.cursor
+                };
+                let old_path_end = sep_start;
+
+                let new_path_start = sep_start + 3;
+                let new_path_end = line_end;
+
+                let old_path = FilePath {
+                    range: old_path_start..old_path_end,
+                    is_quoted: false,
+                };
+                let new_path = FilePath {
+                    range: new_path_start..new_path_end,
+                    is_quoted: false,
+                };
+
+                self.cursor = line_end;
+                self.newline().ok();
+
+                (old_path, new_path)
+            }
+            None => {
+                let old_path = self.diff_header_path(Self::ascii_whitespace)?;
+                let new_path = self.diff_header_path(Self::newline_or_eof)?;
+                (old_path, new_path)
+            }
+        };
 
         Ok((old_path, new_path, false))
+    }
+
+    fn find_line_end(&self) -> usize {
+        let mut sub_parser = self.clone();
+        for pos in self.cursor..=self.input.len() {
+            sub_parser.cursor = pos;
+            if let Ok(found) = sub_parser.newline_or_eof() {
+                return found.range().start;
+            }
+        }
+        self.input.len()
     }
 
     fn diff_header_path(&mut self, end: ParseFn<'a, Range<usize>>) -> ThinResult<FilePath> {
@@ -1110,7 +1166,6 @@ mod tests {
 
     #[test]
     fn filenames_with_spaces() {
-        // This case is ambiguous, normally if there's ---/+++ headers, we can use that.
         let input = "\
             diff --git a/file one.txt b/file two.txt\n\
             index 5626abf..f719efd 100644\n\
@@ -1120,8 +1175,27 @@ mod tests {
             ";
         let mut parser = Parser::new(input);
         let diff = parser.parse_diff().unwrap();
-        assert_eq!(diff[0].header.old_file.fmt(input), "file");
-        assert_eq!(diff[0].header.new_file.fmt(input), "one.txt b/file two.txt");
+        assert_eq!(diff[0].header.old_file.fmt(input), "file one.txt");
+        assert_eq!(diff[0].header.new_file.fmt(input), "file two.txt");
+    }
+
+    #[test]
+    fn added_file_with_spaces_in_name() {
+        let input = "diff --git a/something with space.md b/something with space.md\n\
+            new file mode 100644\n\
+            index 0000000..e69de29\n";
+        let mut parser = Parser::new(input);
+        let diff = parser.parse_diff().unwrap();
+        assert_eq!(diff.len(), 1);
+        assert_eq!(diff[0].header.status, Status::Added);
+        assert_eq!(
+            diff[0].header.old_file.fmt(input),
+            "something with space.md"
+        );
+        assert_eq!(
+            diff[0].header.new_file.fmt(input),
+            "something with space.md"
+        );
     }
 
     #[test]
