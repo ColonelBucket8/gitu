@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.43.0] - 2026-07-11
+
+### 🚀 Features
+
+- Scroll view up/down ctrl+y, ctrl+e. Don't move cursor when scrolling
+
+### 🐛 Bug Fixes
+
+- Parse file paths with spaces in diff header
+- *(log)* Avoid panic when showing log of a branch with no commits
+
 ## [0.42.0] - 2026-05-22
 
 ### 🚀 Features
@@ -16,17 +27,6 @@ All notable changes to this project will be documented in this file.
 - Stash view shows staged/unstaged/untracked
 - Add cherry-pick command and status display
 - *(branch)* Add rename branch operation
-
-### 🐛 Bug Fixes
-
-- Show works with kakoune
-- Double press on transient selection menu
-- Handle 'no commits yet' status with remote
-
-## [0.41.0] - 2026-03-11
-
-### 🚀 Features
-
 - *(rebase)* Use new picker when selecting a rebase target
 - Convert branch operations to interactive picker
 - Use new interactive picker when merging (#496)
@@ -35,6 +35,9 @@ All notable changes to this project will be documented in this file.
 
 ### 🐛 Bug Fixes
 
+- Show works with kakoune
+- Double press on transient selection menu
+- Handle 'no commits yet' status with remote
 - Keys double press on Windows (#385) (again)
 - Make `backtab` key bindable (shift-tab)
 

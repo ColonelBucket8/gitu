@@ -1,21 +1,11 @@
-## [0.42.0] - 2026-05-22
+## [0.43.0] - 2026-07-11
 
 ### 🚀 Features
 
-- Display pending keys, like the new `gg` or `gr`
-- Add keybinding to scroll top and bottom
-- *(cli)* `gitu blame [--rev <REV>] <FILE>`
-- Ability to open editor from a selected hunk-line
-- Blame files/hunks and added lines with 'B'
-- Support reversing (`v`) file/hunk/line patch
-- Support applying stash file/hunk/line patch
-- Stash view shows staged/unstaged/untracked
-- Add cherry-pick command and status display
-- *(branch)* Add rename branch operation
+- Scroll view up/down ctrl+y, ctrl+e. Don't move cursor when scrolling
 
 ### 🐛 Bug Fixes
 
-- Show works with kakoune
-- Double press on transient selection menu
-- Handle 'no commits yet' status with remote
+- Parse file paths with spaces in diff header
+- *(log)* Avoid panic when showing log of a branch with no commits
 
